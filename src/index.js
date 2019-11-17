@@ -7,6 +7,8 @@ import { makeDOMDriver } from "@cycle/dom";
 import { run } from "@cycle/run"; //
 import { makePoseDetectionDriver } from "cycle-posenet-driver";
 
+
+
 function main(sources) {
   // 3D model points
   const numRows = 4;
@@ -74,6 +76,9 @@ function main(sources) {
   };
 
   let nose_x =0, nose_y = 0
+  var move_list = [];
+  var prevX = 0, currX = 0, prevY = 0, currY = 0;
+
   // main event loop
   sources.PoseDetection.poses.addListener({
     next: poses => {
@@ -214,25 +219,58 @@ function main(sources) {
       // cv.line(im, pNose, p4, [0, 0, 255, 255], 2);
 
       // Display image
-      //$("#text").text(pNose)
+      //change dot position
       let diff_x = ns.x-nose_x;
       let diff_y = ns.y -nose_y;
-      console.log(diff_x,diff_y);
+
       nose_x = ns.x;
       nose_y = ns.y;
       let dot_x = $('#dot').position().left;
       let dot_y = $('#dot').position().top;
-      console.log(dot_x,dot_y)
+
 
       let newpos_y = dot_y+diff_y, newpos_x = dot_x+ diff_x;
-      if (newpos_x>=400) newpos_x = 400
-      if(newpos_x<=300) newpos_x = 300
-      if (newpos_y>=600) newpos_y = 600
-      if(newpos_y<=500) newpos_y = 500
+      if (newpos_x>=395) newpos_x = 395
+      if(newpos_x<=295) newpos_x = 295
+      if (newpos_y>=590) newpos_y = 590
+      if(newpos_y<=490) newpos_y = 490
       $('#dot').css({top: newpos_y +'px', left: newpos_x+'px',});
 
+      //push to feedback trace
+      let cav_x = $('#myCanvas').position().left;
+      let cav_y = $('#myCanvas').position().top;
+      // console.log(cav_x,cav_y)
+      //console.log(Math.floor(395-newpos_x),Math.floor(newpos_y-490));
 
-      //document.querySelector("text").innerText = string(imagePoints.data64F[0])+string(imagePoints.data64F[1])
+      if(move_list.length <= 20){
+        move_list.push([Math.floor(newpos_x-295),Math.floor(newpos_y-490)]);
+      }else{
+        move_list.shift();
+        move_list.push([Math.floor(newpos_x-295),Math.floor(newpos_y-490)]);
+      }
+
+      //draw line in canvas
+      var ctx = document.getElementById("myCanvas").getContext("2d");
+      ctx.clearRect(0, 0, 100, 100);
+      ctx.beginPath();
+      // ctx.moveTo(0,0);
+      // ctx.lineTo(100,100);
+      // ctx.stroke();
+      // ctx.closePath();
+      console.log(move_list[0][0],move_list[0][1])
+      for(let i=0;i<move_list.length-1;i++){
+        prevX = move_list[i][0];
+        prevY = move_list[i][1];
+        currX = move_list[i+1][0];
+        currY = move_list[i+1][1];
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
+      }
+
       cv.imshow(document.querySelector("canvas"), im);
       im.delete();
     }
