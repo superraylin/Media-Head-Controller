@@ -73,6 +73,7 @@ function main(sources) {
     jaco.delete();
   };
 
+  let nose_x =0, nose_y = 0
   // main event loop
   sources.PoseDetection.poses.addListener({
     next: poses => {
@@ -143,12 +144,12 @@ function main(sources) {
       if (!success) {
         return;
       }
-      console.log("Rotation Vector:", rvec.data64F);
-      console.log(
-        "Rotation Vector (in degree):",
-        rvec.data64F.map(d => (d / Math.PI) * 180)
-      );
-      console.log("Translation Vector:", tvec.data64F);
+      // console.log("Rotation Vector:", rvec.data64F);
+      // console.log(
+      //   "Rotation Vector (in degree):",
+      //   rvec.data64F.map(d => (d / Math.PI) * 180)
+      // );
+      // console.log("Translation Vector:", tvec.data64F);
 
       // Project a 3D points [0.0, 0.0, 500.0],  [0.0, 500.0, 0.0],
       //   [500.0, 0.0, 0.0] as z, y, x axis in red, green, blue color
@@ -196,23 +197,42 @@ function main(sources) {
       }
       // draw axis
       const pNose = { x: imagePoints.data64F[0], y: imagePoints.data64F[1] };
-      const pZ = {
-        x: noseEndPoint2DZ.data64F[0],
-        y: noseEndPoint2DZ.data64F[1]
-      };
-      const p3 = {
-        x: nose_end_point2DY.data64F[0],
-        y: nose_end_point2DY.data64F[1]
-      };
-      const p4 = {
-        x: nose_end_point2DX.data64F[0],
-        y: nose_end_point2DX.data64F[1]
-      };
-      cv.line(im, pNose, pZ, [255, 0, 0, 255], 2);
-      cv.line(im, pNose, p3, [0, 255, 0, 255], 2);
-      cv.line(im, pNose, p4, [0, 0, 255, 255], 2);
+      // const pZ = {
+      //   x: noseEndPoint2DZ.data64F[0],
+      //   y: noseEndPoint2DZ.data64F[1]
+      // };
+      // const p3 = {
+      //   x: nose_end_point2DY.data64F[0],
+      //   y: nose_end_point2DY.data64F[1]
+      // };
+      // const p4 = {
+      //   x: nose_end_point2DX.data64F[0],
+      //   y: nose_end_point2DX.data64F[1]
+      // };
+      // cv.line(im, pNose, pZ, [255, 0, 0, 255], 2);
+      // cv.line(im, pNose, p3, [0, 255, 0, 255], 2);
+      // cv.line(im, pNose, p4, [0, 0, 255, 255], 2);
 
       // Display image
+      //$("#text").text(pNose)
+      let diff_x = ns.x-nose_x;
+      let diff_y = ns.y -nose_y;
+      console.log(diff_x,diff_y);
+      nose_x = ns.x;
+      nose_y = ns.y;
+      let dot_x = $('#dot').position().left;
+      let dot_y = $('#dot').position().top;
+      console.log(dot_x,dot_y)
+
+      let newpos_y = dot_y+diff_y, newpos_x = dot_x+ diff_x;
+      if (newpos_x>=400) newpos_x = 400
+      if(newpos_x<=300) newpos_x = 300
+      if (newpos_y>=600) newpos_y = 600
+      if(newpos_y<=500) newpos_y = 500
+      $('#dot').css({top: newpos_y +'px', left: newpos_x+'px',});
+
+
+      //document.querySelector("text").innerText = string(imagePoints.data64F[0])+string(imagePoints.data64F[1])
       cv.imshow(document.querySelector("canvas"), im);
       im.delete();
     }
