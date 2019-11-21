@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="head_con.css">
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -15,6 +16,14 @@
       Loading opencv.js
     </div>
     <canvas id="canvasOutput"></canvas>
+    <canvas id="myCanvas" >      </canvas>
+      <img id = "dot" src="cur_dot.png">
+      <script>
+        var canv = document.getElementById("myCanvas");
+        canv.width = 100;
+        canv.height = 100;
+      </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="dist/index.js"></script>
   </body>
 </html>
