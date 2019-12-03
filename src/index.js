@@ -7,6 +7,40 @@ import { makeDOMDriver } from "@cycle/dom";
 import { run } from "@cycle/run"; //
 import { makePoseDetectionDriver } from "cycle-posenet-driver";
 
+window.cursor_pos = [100,100];
+window.nose_x = -1;
+
+let new_rot = [0,0,0]
+
+class Button_Area{
+  constructor(pos,width,height){
+    this.upper_left = [pos[0]+width/2,pos[1]+height];
+    this.lower_right = [pos[0]-width/2,pos[1]-height];
+    this.pos = pos;
+    this.triggered = false;
+  }
+  check_in(cursor_pos){
+    if(cursor_pos[0]>= this.lower_right[0] && cursor_pos[0]<= this.upper_left[0]){
+      if(cursor_pos[1]>= this.lower_right[1] && cursor_pos[1]<= this.upper_left[1]){
+        this.triggered = true;
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+let up_trig = new Button_Area([100,25],25,25);
+let right_trig = new Button_Area([195,100],5,100);
+let left_trig = new Button_Area([5,100],5,100);
+let down_trig = new Button_Area([100,195],90,5);
+
+let region1 = new Button_Area([30,75],20,75);
+let region2 = new Button_Area([170,75],20,75);
+let region3 = new Button_Area([100,170],90,20);
+
+let buttons_list = [];
+buttons_list.push(up_trig,right_trig,left_trig,down_trig,region1,region2,region3);
 
 
 function main(sources) {
@@ -46,7 +80,7 @@ function main(sources) {
     0,
     1
   ]);
-  console.log("Camera Matrix:", cameraMatrix.data64F);
+  //console.log("Camera Matrix:", cameraMatrix.data64F);
 
   // Create Matrixes
   const imagePoints = cv.Mat.zeros(numRows, 2, cv.CV_64FC1);
@@ -101,6 +135,21 @@ function main(sources) {
         .position;
       const re = person1.keypoints.filter(kpt => kpt.part === "rightEye")[0]
         .position;
+      let lea = {
+        "y": 0,
+        "x": 0
+      };
+      let rea = {
+        "y": 0,
+        "x": 0
+      };
+      if (!person1.keypoints.find(kpt => kpt.part === "leftEar")) {
+        rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
+        .position;
+      } else {
+        lea = person1.keypoints.filter(kpt => kpt.part === "leftEar")[0]
+        .position;
+      }
 
       // 2D image points. If you change the image, you need to change vector
       [
@@ -112,9 +161,13 @@ function main(sources) {
         le.x,
         le.y, // Left eye left corner
         re.x,
-        re.y // Right eye right corner
+        re.y, // Right eye right corner
         // 345, 465, // Left Mouth corner
         // 453, 469 // Right mouth corner
+        lea.x,
+        lea.y,
+        rea.x,
+        rea.y
       ].map((v, i) => {
         imagePoints.data64F[i] = v;
       });
@@ -125,6 +178,10 @@ function main(sources) {
       tvec.data64F[2] = 1000;
       const distToLeftEyeX = Math.abs(le.x - ns.x);
       const distToRightEyeX = Math.abs(re.x - ns.x);
+
+      //const norm_x = distToLeftEyeX;
+      //const norm_y = Math.abs((lea.y + lea.x) / 2 - ns.x);
+
       if (distToLeftEyeX < distToRightEyeX) {
         // looking at left
         rvec.data64F[0] = -1.0;
@@ -186,22 +243,22 @@ function main(sources) {
         jaco
       );
 
-      let im = cv.imread(document.querySelector("canvas"));
-      // color the detected eyes and nose to purple
-      for (var i = 0; i < numRows; i++) {
-        cv.circle(
-          im,
-          {
-            x: imagePoints.doublePtr(i, 0)[0],
-            y: imagePoints.doublePtr(i, 1)[0]
-          },
-          3,
-          [255, 0, 255, 255],
-          -1
-        );
-      }
+      // let im = cv.imread(document.getElementById("canvasOutput"));
+      // // color the detected eyes and nose to purple
+      // for (var i = 0; i < numRows; i++) {
+      //   cv.circle(
+      //     im,
+      //     {
+      //       x: imagePoints.doublePtr(i, 0)[0],
+      //       y: imagePoints.doublePtr(i, 1)[0]
+      //     },
+      //     3,
+      //     [255, 0, 255, 255],
+      //     -1
+      //   );
+      // }
       // draw axis
-      const pNose = { x: imagePoints.data64F[0], y: imagePoints.data64F[1] };
+      //const pNose = { x: imagePoints.data64F[0], y: imagePoints.data64F[1] };
       // const pZ = {
       //   x: noseEndPoint2DZ.data64F[0],
       //   y: noseEndPoint2DZ.data64F[1]
@@ -218,61 +275,45 @@ function main(sources) {
       // cv.line(im, pNose, p3, [0, 255, 0, 255], 2);
       // cv.line(im, pNose, p4, [0, 0, 255, 255], 2);
 
+      //const lea = person1.keypoints.filter(kpt => kpt.part === "leftEar")[0]
+      //  .position;
+      //const rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
+      //  .position;
+
       // Display image
       //change dot position
-      let diff_x = ns.x-nose_x;
-      let diff_y = ns.y -nose_y;
-
-      nose_x = ns.x;
-      nose_y = ns.y;
-      let dot_x = $('#dot').position().left;
-      let dot_y = $('#dot').position().top;
 
 
-      let newpos_y = dot_y+diff_y, newpos_x = dot_x+ diff_x;
-      if (newpos_x>=395) newpos_x = 395
-      if(newpos_x<=295) newpos_x = 295
-      if (newpos_y>=590) newpos_y = 590
-      if(newpos_y<=490) newpos_y = 490
-      $('#dot').css({top: newpos_y +'px', left: newpos_x+'px',});
 
-      //push to feedback trace
-      let cav_x = $('#myCanvas').position().left;
-      let cav_y = $('#myCanvas').position().top;
-      // console.log(cav_x,cav_y)
-      //console.log(Math.floor(395-newpos_x),Math.floor(newpos_y-490));
+      window.nose_x = (window.nose_x === -1)? ns.x:window.nose_x
+
+      let diff_x = ns.x-window.nose_x;
+      window.nose_x  = ns.x;
+
+
+      let norm_x = ns.x - (re.x);
+      let norm_y = ns.y - (lea.y + rea.y);
+
+      console.log(window.cursor_pos[0],diff_x)
+
+      window.cursor_pos[0] = Math.max(Math.min(window.cursor_pos[0]+diff_x,200),0);
+      window.cursor_pos[1] = Math.max(Math.min(norm_y+50,200),0);
+
+      console.log(window.cursor_pos[0],window.cursor_pos[1])
 
       if(move_list.length <= 20){
-        move_list.push([Math.floor(newpos_x-295),Math.floor(newpos_y-490)]);
+        move_list.push([Math.floor(window.cursor_pos[0]),Math.floor(window.cursor_pos[1])]);
       }else{
         move_list.shift();
-        move_list.push([Math.floor(newpos_x-295),Math.floor(newpos_y-490)]);
+        move_list.push([Math.floor(window.cursor_pos[0]),Math.floor(window.cursor_pos[1])]);
       }
 
       //draw line in canvas
       var ctx = document.getElementById("myCanvas").getContext("2d");
-      ctx.clearRect(0, 0, 100, 100);
-      ctx.beginPath();
-      // ctx.moveTo(0,0);
-      // ctx.lineTo(100,100);
-      // ctx.stroke();
-      // ctx.closePath();
-      console.log(move_list[0][0],move_list[0][1])
-      for(let i=0;i<move_list.length-1;i++){
-        prevX = move_list[i][0];
-        prevY = move_list[i][1];
-        currX = move_list[i+1][0];
-        currY = move_list[i+1][1];
-        ctx.moveTo(prevX, prevY);
-        ctx.lineTo(currX, currY);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.closePath();
-      }
+      draw(ctx,move_list);
 
-      cv.imshow(document.querySelector("canvas"), im);
-      im.delete();
+      // cv.imshow(document.getElementById("canvasOutput"), im);
+      // im.delete();
     }
   });
 
@@ -286,6 +327,118 @@ function main(sources) {
     PoseDetection: params$
   };
 }
+
+function reset_buttons(){
+  for(const button of buttons_list){
+      button.triggered = false;
+  }
+}
+function draw_line(ctx,start,end,rgba,linewidth){
+  ctx.beginPath();
+  ctx.moveTo(start[0],start[1]);
+  ctx.lineTo(end[0],end[1]);
+  ctx.strokeStyle = rgba;
+  ctx.lineWidth = linewidth;
+  ctx.stroke();
+  ctx.closePath();
+
+}
+function draw(ctx,move_list) {
+    ctx.clearRect(0, 0, 200, 200);
+
+    //define color
+
+    let yellow = 'rgba(255, 255, 0, 0.5)';
+    let red = 'rgba(255, 0, 0, 0.3)';
+    let green = 'rgba(0, 255, 0, 0.5)';
+    let noColor = 'rgba(0, 0, 0, 0)';
+
+    let col_right = yellow;
+    let col_left = yellow;
+    let col_down = yellow;
+    let col_up = green;
+
+    //draw feedback trace
+    for(let i=0;i<move_list.length-1;i++){
+      draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
+    }
+
+
+    let cur_cursor = [move_list[move_list.length-1][0],move_list[move_list.length-1][1]];
+
+    ctx.fillStyle = 'rgba(0, 0, 200, 1)';
+    ctx.fillRect(cur_cursor[0]-5,cur_cursor[1]-5,10,10);
+
+    new_rot[0] = Math.PI/200.0 * cur_cursor[1] - Math.PI/2;
+    new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
+
+
+    up_trig.check_in(cur_cursor);
+
+    if(up_trig.triggered === true){
+      region1.check_in(cur_cursor);
+      region2.check_in(cur_cursor);
+      region3.check_in(cur_cursor);
+    }
+
+    //if cursor in region1 after region2 or region3, reset all triggered flag
+    if((up_trig.triggered && region1.triggered && (region2.triggered))||
+        (up_trig.triggered && region2.triggered && (region1.triggered))){
+      reset_buttons();
+    }
+
+
+    if(up_trig.triggered && down_trig.check_in(cur_cursor)) {
+      // if(player.getPlayerState()!=1){
+      //     player.playVideo();
+      // }else{
+      //     player.pauseVideo();
+      // }
+      reset_buttons();
+    }
+
+    if(up_trig.triggered && right_trig.check_in(cur_cursor)) {
+      player.playVideo();
+      //player.seekTo(player.getCurrentTime()+15);
+      reset_buttons();
+    }
+
+
+    if(up_trig.triggered && left_trig.check_in(cur_cursor)) {
+      //player.seekTo(player.getCurrentTime()-15);
+      reset_buttons();
+    }
+
+    //draw feedforward trace to trigger
+
+    if (region3.triggered === true){
+      col_left = yellow;
+      col_right = yellow;
+      col_down = green;
+    }
+
+    if(region1.triggered === true){
+      col_left = green;
+      col_right = red;
+      col_down = noColor;
+    }
+    if (region2.triggered === true){
+      col_left = red;
+      col_right = green;
+      col_down = noColor;
+    }
+
+
+
+    if(up_trig.triggered === false){
+      draw_line(ctx,cur_cursor,up_trig.pos, 'rgba(0, 255, 0, 0.5)',10);
+    }else{
+      draw_line(ctx, cur_cursor,right_trig.pos, col_right,10);
+      draw_line(ctx, cur_cursor,left_trig.pos, col_left,10);
+      draw_line(ctx, cur_cursor,down_trig.pos, col_down,10);
+    }
+}
+
 
 // Check out https://cycle.js.org/ for using Cycle.js
 run(main, {

@@ -16,13 +16,30 @@
       Loading opencv.js
     </div>
     <canvas id="canvasOutput"></canvas>
+
+    <div id="video-placeholder"></div>
     <canvas id="myCanvas" >      </canvas>
-      <img id = "dot" src="cur_dot.png">
-      <script>
-        var canv = document.getElementById("myCanvas");
-        canv.width = 100;
-        canv.height = 100;
-      </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+
+      var player;
+
+      function onYouTubeIframeAPIReady() {
+          player = new YT.Player('video-placeholder', {
+              width: 600,
+              height: 400,
+              videoId: 'mR7Fg3VfO6U',
+              playerVars: {
+                  color: 'white',
+                  //playlist: 'taJ60kskkns,FG0fTKAqZ5g'
+              },
+          });
+      }
+
+      var canv = document.getElementById("myCanvas");
+      canv.width = 200;
+      canv.height = 200;
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="dist/index.js"></script>
   </body>
