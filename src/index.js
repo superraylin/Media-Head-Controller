@@ -9,19 +9,20 @@ import { makePoseDetectionDriver } from "cycle-posenet-driver";
 
 window.cursor_pos = [100,100];
 window.nose_x = -1;
+window.y_bound = [-50,112];
 
 let new_rot = [0,0,0]
 
 class Button_Area{
-  constructor(pos,width,height){
-    this.upper_left = [pos[0]+width/2,pos[1]+height];
-    this.lower_right = [pos[0]-width/2,pos[1]-height];
-    this.pos = pos;
+  constructor(x,y,width,height){
+    this.upper_left = [x,y];
+    this.lower_right = [x+width,y+height];
+    this.pos = [x+width/2,y+height/2];
     this.triggered = false;
   }
   check_in(cursor_pos){
-    if(cursor_pos[0]>= this.lower_right[0] && cursor_pos[0]<= this.upper_left[0]){
-      if(cursor_pos[1]>= this.lower_right[1] && cursor_pos[1]<= this.upper_left[1]){
+    if(cursor_pos[0] <=this.lower_right[0] && cursor_pos[0] >=this.upper_left[0]){
+      if(cursor_pos[1] <=this.lower_right[1] && cursor_pos[1]>= this.upper_left[1]){
         this.triggered = true;
         return true;
       }
@@ -29,15 +30,14 @@ class Button_Area{
     return false;
   }
 }
+let up_trig = new Button_Area(75,0,50,50);
+let right_trig = new Button_Area(190,0,10,200);
+let left_trig = new Button_Area(0,0,10,200);
+let down_trig = new Button_Area(10,190,180,10);
 
-let up_trig = new Button_Area([100,25],25,25);
-let right_trig = new Button_Area([195,100],5,100);
-let left_trig = new Button_Area([5,100],5,100);
-let down_trig = new Button_Area([100,195],90,5);
-
-let region1 = new Button_Area([30,75],20,75);
-let region2 = new Button_Area([170,75],20,75);
-let region3 = new Button_Area([100,170],90,20);
+let region1 = new Button_Area(10,0,40,150);
+let region2 = new Button_Area(150,0,40,150);
+let region3 = new Button_Area(10,150,180,40);
 
 let buttons_list = [];
 buttons_list.push(up_trig,right_trig,left_trig,down_trig,region1,region2,region3);
@@ -144,9 +144,13 @@ function main(sources) {
         "x": 0
       };
       if (!person1.keypoints.find(kpt => kpt.part === "leftEar")) {
-        rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
-        .position;
+
+        if(person1.keypoints.find(kpt => kpt.part === "rightEar")){
+          rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
+          .position;
+        }
       } else {
+
         lea = person1.keypoints.filter(kpt => kpt.part === "leftEar")[0]
         .position;
       }
@@ -294,12 +298,16 @@ function main(sources) {
       let norm_x = ns.x - (re.x);
       let norm_y = ns.y - (lea.y + rea.y);
 
-      console.log(window.cursor_pos[0],diff_x)
+      if(norm_y < window.y_bound[0]) window.y_bound[0] = norm_y
+      if(norm_y > window.y_bound[1]) window.y_bound[1] = norm_y
+      //console.log(window.y_bound[0],window.y_bound[1])
+      console.log(norm_y)
+
+
 
       window.cursor_pos[0] = Math.max(Math.min(window.cursor_pos[0]+diff_x,200),0);
-      window.cursor_pos[1] = Math.max(Math.min(norm_y+50,200),0);
+      window.cursor_pos[1] = Math.max(Math.min(norm_y*200/150+66.66,200),0);
 
-      console.log(window.cursor_pos[0],window.cursor_pos[1])
 
       if(move_list.length <= 20){
         move_list.push([Math.floor(window.cursor_pos[0]),Math.floor(window.cursor_pos[1])]);
@@ -318,7 +326,12 @@ function main(sources) {
   });
 
   const params$ = xs.of({
-    singlePoseDetection: { minPoseConfidence: 0.2 }
+    singlePoseDetection: { minPoseConfidence: 0.2 },
+    output: {
+      showVideo: false,
+      showSkeleton: false,
+      showPoints: false,
+    },
   });
   const vdom$ = sources.PoseDetection.DOM;
 
@@ -389,23 +402,22 @@ function draw(ctx,move_list) {
 
 
     if(up_trig.triggered && down_trig.check_in(cur_cursor)) {
-      // if(player.getPlayerState()!=1){
-      //     player.playVideo();
-      // }else{
-      //     player.pauseVideo();
-      // }
+      if(player.getPlayerState()!=1){
+          player.playVideo();
+      }else{
+          player.pauseVideo();
+      }
       reset_buttons();
     }
 
     if(up_trig.triggered && right_trig.check_in(cur_cursor)) {
-      player.playVideo();
-      //player.seekTo(player.getCurrentTime()+15);
+      player.seekTo(player.getCurrentTime()+15);
       reset_buttons();
     }
 
 
     if(up_trig.triggered && left_trig.check_in(cur_cursor)) {
-      //player.seekTo(player.getCurrentTime()-15);
+      player.seekTo(player.getCurrentTime()-15);
       reset_buttons();
     }
 
@@ -431,8 +443,15 @@ function draw(ctx,move_list) {
 
 
     if(up_trig.triggered === false){
+      ctx.strokeRect(75,0,50,50);
       draw_line(ctx,cur_cursor,up_trig.pos, 'rgba(0, 255, 0, 0.5)',10);
     }else{
+      ctx.strokeRect(190,0,10,200);
+      ctx.strokeRect(0,0,10,200);
+      ctx.strokeRect(10,190,180,10);
+      ctx.strokeRect(10,0,40,150);
+      ctx.strokeRect(150,0,40,150);
+      ctx.strokeRect(10,150,180,40);
       draw_line(ctx, cur_cursor,right_trig.pos, col_right,10);
       draw_line(ctx, cur_cursor,left_trig.pos, col_left,10);
       draw_line(ctx, cur_cursor,down_trig.pos, col_down,10);
