@@ -45,6 +45,7 @@ let region3 = new Button_Area(20,150,160,40);
 let buttons_list = [];
 buttons_list.push(up_trig,right_trig,left_trig,down_trig,region1,region2,region3);
 
+var move_list = [];
 
 function main(sources) {
   // 3D model points
@@ -113,7 +114,7 @@ function main(sources) {
   };
 
   let nose_x =0, nose_y = 0
-  var move_list = [];
+
   var prevX = 0, currX = 0, prevY = 0, currY = 0;
 
   // main event loop
@@ -237,12 +238,12 @@ function main(sources) {
 
       }
 
-      let slope = 200/(window.eye_dis/1.2+35)
+      let slope = 200/(window.eye_dis/1+35)
       let offset = 35*slope;
 
-      console.log("***************")
-      console.log(window.eye_dis)
-      console.log(norm_y*slope+offset)
+      // console.log("***************")
+      // console.log(window.eye_dis)
+      // console.log(norm_y*slope+offset)
 
 
 
@@ -374,9 +375,19 @@ function draw(ctx,move_list) {
     // for(let i=0;i<move_list.length-1;i++){
     //   draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
     // }
+    let cur_cursor = [0,0]
+    if(move_list.length>=3){
+      for (let i =1; i <= 3; i++){
+        //move_list[move_list.length-1][1]];
+        cur_cursor[0] += move_list[move_list.length-i][0];
+        cur_cursor[1] += move_list[move_list.length-i][1];
+      }
+      cur_cursor[0] /= 3;
+      cur_cursor[1] /= 3;
+    }else{
+      cur_cursor = [move_list[move_list.length-1][0],move_list[move_list.length-1][1]];
+    }
 
-
-    let cur_cursor = [move_list[move_list.length-1][0],move_list[move_list.length-1][1]];
 
     ctx.fillStyle = 'rgba(0, 0, 200, 1)';
     ctx.fillRect(cur_cursor[0]-5,cur_cursor[1]-5,10,10);
