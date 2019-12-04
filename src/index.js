@@ -395,8 +395,8 @@ function draw(ctx,move_list) {
     window.new_rot[0] = Math.PI/200.0 * cur_cursor[1] - Math.PI/2;
     window.new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
 
-
-    if(up_trig.triggered === false && up_trig.check_in(cur_cursor)){
+    up_trig.check_in(cur_cursor)
+    if(up_trig.triggered === false && cur_cursor[1]===0){
       window.cursor_pos[0] = 100;
     }
 
