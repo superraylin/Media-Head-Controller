@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="head_con.css">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=1.0"
+    />
+    <meta name="description" content="example" />
+    <title>example</title>
+  </head>
+
+  <body>
+    <header>
+      <h1> Head Controller </h1>
+    </header>
+    <style type="text/css">
+      #submit {
+        float: right;
+        margin: 15px;
+        margin-right: 150px;
+      }
+      #url {
+        float: right;
+        margin: 15px;
+      }
+      #videoButton {
+        margin-left: 450px;
+      }
+    </style>
+    <body>
+      <button id="submit" disabled>submit</button>
+      <input type="text" id="url" onkeyup="ifEnable()" value="" size="50">
+    </body>
+    <script>
+      function ifEnable() {
+        if(document.getElementById("url").value.length > 0) { 
+          document.getElementById('submit').disabled = false; 
+        } else { 
+          document.getElementById('submit').disabled = true;
+        }
+      }
+    </script>
+
+    <div id="app">
+      Loading opencv.js
+    </div>
+    <canvas id="canvasOutput"></canvas>
+
+    <div id="video-placeholder"></div>
+
+    <div id="videoButton">
+        <button id="play">play</button>
+        <button id="prev">prev</button>
+        <button id="next">next</button>
+    </div>
+    <div><br></div>
+
+    <canvas id="myCanvas" >      </canvas>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+
+      var player;
+
+      function onYouTubeIframeAPIReady() {
+          player = new YT.Player('video-placeholder', {
+              width: 600,
+              height: 400,
+              videoId: 'mR7Fg3VfO6U',
+              playerVars: {
+                  color: 'white',
+                  //playlist: 'taJ60kskkns,FG0fTKAqZ5g'
+              },
+          });
+      }
+
+      $('#submit').on('click', function() {
+        var url = document.getElementById("url").value;
+        var vid = url.substring(url.indexOf("=")+1);
+        player.cueVideoById(vid);
+      });
+
+      var canv = document.getElementById("myCanvas");
+      canv.width = 200;
+      canv.height = 200;
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="dist/index.js"></script>
+  </body>
+</html>
