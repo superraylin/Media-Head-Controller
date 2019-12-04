@@ -372,9 +372,12 @@ function draw(ctx,move_list) {
     let col_up = green;
 
     //draw feedback trace
-    // for(let i=0;i<move_list.length-1;i++){
-    //   draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
-    // }
+
+    
+    for(let i=0;i<move_list.length-4;i++){
+      draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
+    }
+
     let cur_cursor = [0,0]
     if(move_list.length>=3){
       for (let i =1; i <= 3; i++){
@@ -396,8 +399,17 @@ function draw(ctx,move_list) {
     window.new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
 
     up_trig.check_in(cur_cursor)
-    if(up_trig.triggered === false && cur_cursor[1]===0){
-      window.cursor_pos[0] = 100;
+    if(up_trig.triggered === false ){
+      let reset_flag = true;
+      for(let i=0;i<move_list.length-1;i++){
+        if(move_list[i][1] !== 0){
+          reset_flag = false;
+          break;
+        }
+      }
+      if(reset_flag){
+        window.cursor_pos[0] = 100;
+      }
     }
 
     if(up_trig.triggered === true){
