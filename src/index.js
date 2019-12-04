@@ -33,7 +33,7 @@ class Button_Area{
 }
 
 
-let up_trig = new Button_Area(75,0,50,50);
+let up_trig = new Button_Area(85,0,30,30);
 let right_trig = new Button_Area(180,0,20,200);
 let left_trig = new Button_Area(0,0,20,200);
 let down_trig = new Button_Area(20,180,180,20);
@@ -446,7 +446,7 @@ function draw(ctx,move_list) {
     ctx.lineWidth = 1;
     if(up_trig.triggered === false){
       //ctx.fillStyle
-      ctx.strokeRect(75,0,50,50);
+      ctx.strokeRect(85,0,30,30);
       draw_line(ctx,cur_cursor,up_trig.pos, 'rgba(0, 255, 0, 0.5)',10);
     }else{
       draw_play(ctx,[100,180],'rgba(0, 0, 0, 1)',4,(player.getPlayerState()==1));
