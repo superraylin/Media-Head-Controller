@@ -31,14 +31,16 @@ class Button_Area{
     return false;
   }
 }
-let up_trig = new Button_Area(75,0,50,50);
-let right_trig = new Button_Area(190,0,10,200);
-let left_trig = new Button_Area(0,0,10,200);
-let down_trig = new Button_Area(10,190,180,10);
 
-let region1 = new Button_Area(10,0,40,150);
-let region2 = new Button_Area(150,0,40,150);
-let region3 = new Button_Area(10,150,180,40);
+
+let up_trig = new Button_Area(75,0,50,50);
+let right_trig = new Button_Area(180,0,20,200);
+let left_trig = new Button_Area(0,0,20,200);
+let down_trig = new Button_Area(20,180,180,20);
+
+let region1 = new Button_Area(20,0,50,150);
+let region2 = new Button_Area(130,0,50,150);
+let region3 = new Button_Area(20,150,160,40);
 
 let buttons_list = [];
 buttons_list.push(up_trig,right_trig,left_trig,down_trig,region1,region2,region3);
@@ -297,6 +299,7 @@ function draw_line(ctx,start,end,rgba,linewidth){
 }
 function draw(ctx,move_list) {
     ctx.clearRect(0, 0, 200, 200);
+    let player = window.player;
 
     //define color
 
@@ -325,7 +328,9 @@ function draw(ctx,move_list) {
     new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
 
 
-    up_trig.check_in(cur_cursor);
+    if(up_trig.triggered === false && up_trig.check_in(cur_cursor)){
+      window.cursor_pos[0] = 100;
+    }
 
     if(up_trig.triggered === true){
       region1.check_in(cur_cursor);
@@ -385,12 +390,13 @@ function draw(ctx,move_list) {
       ctx.strokeRect(75,0,50,50);
       draw_line(ctx,cur_cursor,up_trig.pos, 'rgba(0, 255, 0, 0.5)',10);
     }else{
-      ctx.strokeRect(190,0,10,200);
-      ctx.strokeRect(0,0,10,200);
-      ctx.strokeRect(10,190,180,10);
-      ctx.strokeRect(10,0,40,150);
-      ctx.strokeRect(150,0,40,150);
-      ctx.strokeRect(10,150,180,40);
+      ctx.strokeRect(180,0,20,200);
+      ctx.strokeRect(0,0,20,200);
+      ctx.strokeRect(20,180,180,20);
+
+      ctx.strokeRect(20,0,50,150);
+      ctx.strokeRect(130,0,50,150);
+      ctx.strokeRect(20,150,160,30);
       draw_line(ctx, cur_cursor,right_trig.pos, col_right,10);
       draw_line(ctx, cur_cursor,left_trig.pos, col_left,10);
       draw_line(ctx, cur_cursor,down_trig.pos, col_down,10);

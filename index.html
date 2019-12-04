@@ -35,9 +35,9 @@
     </body>
     <script>
       function ifEnable() {
-        if(document.getElementById("url").value.length > 0) { 
-          document.getElementById('submit').disabled = false; 
-        } else { 
+        if(document.getElementById("url").value.length > 0) {
+          document.getElementById('submit').disabled = false;
+        } else {
           document.getElementById('submit').disabled = true;
         }
       }
@@ -49,27 +49,21 @@
     <canvas id="canvasOutput"></canvas>
 
     <div id="video-placeholder"></div>
-
-    <div id="videoButton">
-        <button id="play">play</button>
-        <button id="prev">prev</button>
-        <button id="next">next</button>
-    </div>
     <div><br></div>
 
-    <canvas id="myCanvas" >      </canvas>
+    <canvas id="myCanvas" > </canvas>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script>
 
-      var player;
+       window.player;
 
       function onYouTubeIframeAPIReady() {
-          player = new YT.Player('video-placeholder', {
+          window.player = new YT.Player('video-placeholder', {
               width: 600,
               height: 400,
-              videoId: 'mR7Fg3VfO6U',
+              videoId: 'Yaui2pL26ZQ',
               playerVars: {
                   color: 'white',
                   //playlist: 'taJ60kskkns,FG0fTKAqZ5g'
@@ -87,7 +81,6 @@
       canv.width = 200;
       canv.height = 200;
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="dist/index.js"></script>
   </body>
 </html>
