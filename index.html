@@ -15,23 +15,11 @@
     <header>
       <h1> Head Controller </h1>
     </header>
-    <style type="text/css">
-      #submit {
-        float: right;
-        margin: 15px;
-        margin-right: 150px;
-      }
-      #url {
-        float: right;
-        margin: 15px;
-      }
-      #videoButton {
-        margin-left: 450px;
-      }
-    </style>
     <body>
-      <button id="submit" disabled>submit</button>
+      Enter youtube video URL:
       <input type="text" id="url" onkeyup="ifEnable()" value="" size="50">
+      <button id="submit" disabled>submit</button>
+      <div><br></div>
     </body>
     <script>
       function ifEnable() {
@@ -42,13 +30,14 @@
         }
       }
     </script>
+    <div id="video-placeholder"></div>
 
     <div id="app">
       Loading opencv.js
     </div>
     <canvas id="canvasOutput"></canvas>
 
-    <div id="video-placeholder"></div>
+
     <div><br></div>
 
     <canvas id="myCanvas" > </canvas>
@@ -82,5 +71,27 @@
       canv.height = 200;
     </script>
     <script src="dist/index.js"></script>
+
+    <!-- graphic -->
+          <script> window.tiny_graphics = {};             // Store all our JavaScipt code inside of classes here.
+                   window.classes = {}
+                   </script>
+                                                <!--  Javascript "include" files.  Any code in them gets executed as part of the page loading: //-->
+          <script src="tiny-graphics.js" ></script>
+          <script src= "dependencies.js" ></script>
+          <script src=   "main-scene.js" ></script></head>
+          <body style="background: White">       <!-- Begin typing your web page here. //-->
+          <style>
+          * { font-family: monospace }
+          #main-canvas{ position: absolute;left:800px;
+            top: 200px;width: 200px; height: 200px; margin-bottom:3px; background-color: white}
+
+          </style>
+
+          <div id="main-canvas" class="canvas-widget"></div>
+          <script>
+            const scenes = [ "Assignment_Four_Scene"];
+            new Canvas_Widget( "main-canvas", scenes,false );
+          </script>
   </body>
 </html>

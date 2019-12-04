@@ -12,7 +12,7 @@ window.nose_x = -1;
 window.y_bound = [-50,112];
 window.eye_dis = 80;
 
-let new_rot = [0,0,0]
+window.new_rot = [0,0,0];
 
 class Button_Area{
   constructor(x,y,width,height){
@@ -287,6 +287,63 @@ function reset_buttons(){
       button.triggered = false;
   }
 }
+
+
+function draw_play(ctx,pos,rgba,linewidth,check_play){
+
+  ctx.strokeStyle = rgba;
+  ctx.lineWidth = linewidth;
+  if(!check_play){
+    ctx.beginPath();
+    ctx.moveTo(pos[0],pos[1]);
+    ctx.lineTo(pos[0]+10,pos[1]+10);
+    ctx.lineTo(pos[0],pos[1]+20);
+    ctx.fill();
+    ctx.closePath();
+
+  }else{
+
+    ctx.beginPath();
+    ctx.moveTo(pos[0],pos[1]);
+    ctx.lineTo(pos[0],pos[1]+20);
+    ctx.moveTo(pos[0]+10,pos[1]);
+    ctx.lineTo(pos[0]+10,pos[1]+20);
+    ctx.stroke();
+    ctx.closePath();
+
+  }
+}
+
+function draw_fb(ctx,pos,rgba,linewidth,forward){
+  ctx.strokeStyle = rgba;
+  ctx.lineWidth = linewidth;
+  if(forward){
+    ctx.beginPath();
+    ctx.moveTo(pos[0],pos[1]);
+    ctx.lineTo(pos[0]+5,pos[1]+5);
+    ctx.lineTo(pos[0],pos[1]+10);
+
+    ctx.moveTo(pos[0]+5,pos[1]);
+    ctx.lineTo(pos[0]+10,pos[1]+5);
+    ctx.lineTo(pos[0]+5,pos[1]+10);
+    ctx.stroke();
+    ctx.closePath();
+
+  }else{
+
+    ctx.beginPath();
+    ctx.moveTo(pos[0],pos[1]);
+    ctx.lineTo(pos[0]-5,pos[1]+5);
+    ctx.lineTo(pos[0],pos[1]+10);
+
+    ctx.moveTo(pos[0]+5,pos[1]);
+    ctx.lineTo(pos[0],pos[1]+5);
+    ctx.lineTo(pos[0]+5,pos[1]+10);
+    ctx.stroke();
+    ctx.closePath();
+
+  }
+}
 function draw_line(ctx,start,end,rgba,linewidth){
   ctx.beginPath();
   ctx.moveTo(start[0],start[1]);
@@ -314,9 +371,9 @@ function draw(ctx,move_list) {
     let col_up = green;
 
     //draw feedback trace
-    for(let i=0;i<move_list.length-1;i++){
-      draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
-    }
+    // for(let i=0;i<move_list.length-1;i++){
+    //   draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
+    // }
 
 
     let cur_cursor = [move_list[move_list.length-1][0],move_list[move_list.length-1][1]];
@@ -324,8 +381,8 @@ function draw(ctx,move_list) {
     ctx.fillStyle = 'rgba(0, 0, 200, 1)';
     ctx.fillRect(cur_cursor[0]-5,cur_cursor[1]-5,10,10);
 
-    new_rot[0] = Math.PI/200.0 * cur_cursor[1] - Math.PI/2;
-    new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
+    window.new_rot[0] = Math.PI/200.0 * cur_cursor[1] - Math.PI/2;
+    window.new_rot[1] = Math.PI/200.0 * cur_cursor[0] - Math.PI/2
 
 
     if(up_trig.triggered === false && up_trig.check_in(cur_cursor)){
@@ -385,18 +442,25 @@ function draw(ctx,move_list) {
     }
 
 
-
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.lineWidth = 1;
     if(up_trig.triggered === false){
+      //ctx.fillStyle
       ctx.strokeRect(75,0,50,50);
       draw_line(ctx,cur_cursor,up_trig.pos, 'rgba(0, 255, 0, 0.5)',10);
     }else{
+      draw_play(ctx,[100,180],'rgba(0, 0, 0, 1)',4,(player.getPlayerState()==1));
+      draw_fb(ctx,[185,100],'rgba(0, 0, 0, 1)',2,true);
+      draw_fb(ctx,[10,100],'rgba(0, 0, 0, 1)',2,false);
       ctx.strokeRect(180,0,20,200);
       ctx.strokeRect(0,0,20,200);
-      ctx.strokeRect(20,180,180,20);
+      ctx.strokeRect(20,180,160,20);
 
-      ctx.strokeRect(20,0,50,150);
-      ctx.strokeRect(130,0,50,150);
-      ctx.strokeRect(20,150,160,30);
+
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+      // ctx.strokeRect(20,0,50,150);
+      // ctx.strokeRect(130,0,50,150);
+      // ctx.strokeRect(20,150,160,30);
       draw_line(ctx, cur_cursor,right_trig.pos, col_right,10);
       draw_line(ctx, cur_cursor,left_trig.pos, col_left,10);
       draw_line(ctx, cur_cursor,down_trig.pos, col_down,10);

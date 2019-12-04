@@ -6,3 +6,10 @@
   border:1px solid #000000;
   z-index: 1;
 }
+
+/* #video-placeholder{
+  position: fixed;
+  left:200px;
+  top:200px;
+  z-index: 100;
+} */
