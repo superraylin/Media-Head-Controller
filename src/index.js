@@ -10,6 +10,7 @@ import { makePoseDetectionDriver } from "cycle-posenet-driver";
 window.cursor_pos = [100,100];
 window.nose_x = -1;
 window.y_bound = [-50,112];
+window.eye_dis = 80;
 
 let new_rot = [0,0,0]
 
@@ -161,13 +162,12 @@ function main(sources) {
         ns.y, // Nose tip
         ns.x,
         ns.y, // Nose tip (see HACK! above)
-        // 399, 561, // Chin
+
         le.x,
         le.y, // Left eye left corner
         re.x,
         re.y, // Right eye right corner
-        // 345, 465, // Left Mouth corner
-        // 453, 469 // Right mouth corner
+
         lea.x,
         lea.y,
         rea.x,
@@ -210,87 +210,9 @@ function main(sources) {
       if (!success) {
         return;
       }
-      // console.log("Rotation Vector:", rvec.data64F);
-      // console.log(
-      //   "Rotation Vector (in degree):",
-      //   rvec.data64F.map(d => (d / Math.PI) * 180)
-      // );
-      // console.log("Translation Vector:", tvec.data64F);
-
-      // Project a 3D points [0.0, 0.0, 500.0],  [0.0, 500.0, 0.0],
-      //   [500.0, 0.0, 0.0] as z, y, x axis in red, green, blue color
-      cv.projectPoints(
-        pointZ,
-        rvec,
-        tvec,
-        cameraMatrix,
-        distCoeffs,
-        noseEndPoint2DZ,
-        jaco
-      );
-      cv.projectPoints(
-        pointY,
-        rvec,
-        tvec,
-        cameraMatrix,
-        distCoeffs,
-        nose_end_point2DY,
-        jaco
-      );
-      cv.projectPoints(
-        pointX,
-        rvec,
-        tvec,
-        cameraMatrix,
-        distCoeffs,
-        nose_end_point2DX,
-        jaco
-      );
-
-      // let im = cv.imread(document.getElementById("canvasOutput"));
-      // // color the detected eyes and nose to purple
-      // for (var i = 0; i < numRows; i++) {
-      //   cv.circle(
-      //     im,
-      //     {
-      //       x: imagePoints.doublePtr(i, 0)[0],
-      //       y: imagePoints.doublePtr(i, 1)[0]
-      //     },
-      //     3,
-      //     [255, 0, 255, 255],
-      //     -1
-      //   );
-      // }
-      // draw axis
-      //const pNose = { x: imagePoints.data64F[0], y: imagePoints.data64F[1] };
-      // const pZ = {
-      //   x: noseEndPoint2DZ.data64F[0],
-      //   y: noseEndPoint2DZ.data64F[1]
-      // };
-      // const p3 = {
-      //   x: nose_end_point2DY.data64F[0],
-      //   y: nose_end_point2DY.data64F[1]
-      // };
-      // const p4 = {
-      //   x: nose_end_point2DX.data64F[0],
-      //   y: nose_end_point2DX.data64F[1]
-      // };
-      // cv.line(im, pNose, pZ, [255, 0, 0, 255], 2);
-      // cv.line(im, pNose, p3, [0, 255, 0, 255], 2);
-      // cv.line(im, pNose, p4, [0, 0, 255, 255], 2);
-
-      //const lea = person1.keypoints.filter(kpt => kpt.part === "leftEar")[0]
-      //  .position;
-      //const rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
-      //  .position;
-
-      // Display image
-      //change dot position
-
 
 
       window.nose_x = (window.nose_x === -1)? ns.x:window.nose_x
-
       let diff_x = ns.x-window.nose_x;
       window.nose_x  = ns.x;
 
@@ -301,12 +223,29 @@ function main(sources) {
       if(norm_y < window.y_bound[0]) window.y_bound[0] = norm_y
       if(norm_y > window.y_bound[1]) window.y_bound[1] = norm_y
       //console.log(window.y_bound[0],window.y_bound[1])
-      console.log(norm_y)
+      //console.log(norm_y)
+
+
+      //console.log(re.x - le.x );
+
+      if(Math.abs(distToRightEyeX - distToLeftEyeX) <3){
+        let temp = Math.floor(Math.abs(re.x-le.x));
+
+        if(Math.abs(window.eye_dis - temp) >5){window.eye_dis = temp;}
+
+      }
+
+      let slope = 200/(window.eye_dis/1.2+35)
+      let offset = 35*slope;
+
+      console.log("***************")
+      console.log(window.eye_dis)
+      console.log(norm_y*slope+offset)
 
 
 
       window.cursor_pos[0] = Math.max(Math.min(window.cursor_pos[0]+diff_x,200),0);
-      window.cursor_pos[1] = Math.max(Math.min(norm_y*200/150+66.66,200),0);
+      window.cursor_pos[1] = Math.max(Math.min(norm_y*slope+offset,200),0);
 
 
       if(move_list.length <= 20){
