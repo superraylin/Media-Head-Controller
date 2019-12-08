@@ -1,7 +1,12 @@
-# Head pose estimation demo
+# Media Head Controller
 
-A head pose estimation Cycle.js demo app using [OpenCV.js](https://github.com/mjyc/opencv) and [TensorFlow.js' PoseNet](https://github.com/tensorflow/tfjs-models/tree/master/posenet); the implementation is loosely based on [this post](https://www.learnopencv.com/head-pose-estimation-using-opencv-and-dlib/).
+This project is building on top of this [git repository](https://github.com/mjyc/head-pose-estimation-demo)
 
-Run `npm start` and open `index.html` in your browser or visit [here](https://008olz2wmn.codesandbox.io/).
+## Build this program
+`git clone ` the repository
+make sure Node.js is installed
+Run `npm start`
 
-Code is also available at [codesandbox](https://codesandbox.io/s/008olz2wmn).
+## Use this Program
+Open host.commnd if you are using MaxOS, or open host.bat if you are using Windows. 
+
