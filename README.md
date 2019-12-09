@@ -4,13 +4,14 @@ This project is building on top of this [git repository](https://github.com/mjyc
 
 ## Build and Run this program
 ### Build
-`git clone ` the repository <br />
+first clone the repository to local folder
+`git clone https://github.com/superraylin/Media-Head-Controller.git`<br />
 make sure Node.js is installed <br />
 Run `npm start` in the folder
 
 ### Run 
 After the program is compiled successfully, <br />
-Open `host.commnd` if you are using MaxOS, or open `host.bat` if you are using Windows.
+Open `host.command` if you are using MaxOS, or open `host.bat` if you are using Windows.
 (If the access of above files is denied, try `chmod 777 host.command` or `chomod 777 host.bat`) <br />
 Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br />
 
