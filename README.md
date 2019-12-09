@@ -2,12 +2,14 @@
 
 This project is building on top of this [git repository](https://github.com/mjyc/head-pose-estimation-demo)
 
-## Build and Open this program
+## Build and Run this program
+### Build
 `git clone ` the repository <br />
 make sure Node.js is installed <br />
 Run `npm start` in the folder
 
-After the program is compile successfully, <br />
+### Run 
+After the program is compiled successfully, <br />
 Open `host.commnd` if you are using MaxOS, or open `host.bat` if you are using Windows.
 (If the access of above files is denied, try `chmod 777 host.command` or `chomod 777 host.bat`) <br />
 Open chrome, and type `localhost:8000` in the address bar. 
