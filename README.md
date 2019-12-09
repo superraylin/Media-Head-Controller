@@ -59,5 +59,5 @@ Slightly shake your head without touching the left/right box. <br />
 <br />
 <br />
 ## Acknowledgment and Citation
-This project is building on top of this repository [mjyc/head-pose-estimation-demo](https://github.com/mjyc/head-pose-estimation-demo)
+This project is building on top of this repository [mjyc/head-pose-estimation-demo](https://github.com/mjyc/head-pose-estimation-demo) <br/>
 Graphic library is provided by UCLA CS-174A, older version of this repository [tiny-graphics](https://github.com/encyclopedia-of-code/tiny-graphics-js)
