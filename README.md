@@ -1,7 +1,7 @@
 # Media Head Controller
 In the modern society, online tutorials on Youtube enable us to learn whenever and whatever we want. Furthermore, these videos allow us to control the flow of learning if instructions were unclear or hard to comprehend. However, we are most likely need to stop what we were doing in order to free our hands to pause or rewind the video. For example, if we are following a cooking tutorial, we need to put down the knife, wash our hands, and wipe them dry every time before we can comfortably control the video. Especially, most tutorials speed up or skip the waiting time to condense the content; therefore, we need to pause and rewind even more. 
 
-We provide a solution. Our project allows a user to control the flow of the video without using his hands. We project the movement of the user's head into a 2D plane. The user can use the cursor on the screen to play, pause, fast forward and rewind the videos. 
+We provide a solution. Our project allows a user to control the flow of the video without using his hands. We project the movement of the user's head into a 2D plane. The user can use the cursor on the screen to play, pause, fast forward and rewind the video. 
 
 
 ## Build and Run this program
