@@ -19,13 +19,17 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 
 
 ## Commands detail
-change youtube videos <br/>
-<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/cancel.gif" width="300" height ="200">
-
+**change youtube videos** <br/>
+<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/change_video.gif" width="300" height ="200">
+<br />
+<br />
 ### Default screen
 **Open Control Box:** Move cursor to the upper middle square   <br />
-<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/open_control.gif" width="300" height ="200"><br />
+<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/open_control.gif" width="300" height ="200">
+<br />
+<br />
 **Reset cursor postion (x-axis):** Move cursor to the reset line and wait for few seconds (all black feedback line is gone)<br />
+<br />
 <br />
 <br />
 ### Control Screen
@@ -35,12 +39,14 @@ Move cursor to the bottom box<br />
 <br />
 **Forward/ Backward 15 seconds:**
 Move cursor to the right/left box<br />
-<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/forward_backward.gif" width="300" height ="200"><br />
+<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/forward_backward.gif" width="300" height ="200">
+<br />
 <br />
 **Close Control Screen:**
 Slightly shake your head without touching the left/right box. <br />
-<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/cancel.gif" width="300" height ="200"><br />
-
+<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/cancel.gif" width="300" height ="200">
+<br />
+<br />
 
 ### Feedforward Color code:
 **Green:** When only one command is possible. <br />
