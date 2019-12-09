@@ -12,7 +12,11 @@ Run `npm start` in the folder
 After the program is compiled successfully, <br />
 Open `host.commnd` if you are using MaxOS, or open `host.bat` if you are using Windows.
 (If the access of above files is denied, try `chmod 777 host.command` or `chomod 777 host.bat`) <br />
-Open chrome, and type `localhost:8000` in the address bar. <br />
+Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br />
+
+
+
+
 
 ## Commands detail
 ### Default screen
