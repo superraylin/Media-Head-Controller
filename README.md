@@ -35,7 +35,7 @@ Slightly shake your head without touching the left/right box. <br />
 ### Feedforward Color code:
 **Green:** When only one command is possible. <br />
 **Yellow:** Multiple possible command.<br />
-**Red:** Move to that direction to close control screen
+**Red:** Move to that direction to close control screen, triggered only when the cursor are close to left or right side
 
 
 
