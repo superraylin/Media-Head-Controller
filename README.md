@@ -1,6 +1,6 @@
 # Media Head Controller
+Intro:
 
-This project is building on top of this this repository [mjyc/head-pose-estimation-demo](https://github.com/mjyc/head-pose-estimation-demo)
 
 ## Build and Run this program
 ### Build
@@ -54,3 +54,7 @@ Slightly shake your head without touching the left/right box. <br />
 **Green:** When only one command is possible. <br />
 **Yellow:** Multiple possible command.<br />
 **Red:** Move to that direction to close control screen, triggered only when the cursor are close to left or right side
+<br />
+<br />
+## Acknowledgment and Citation
+This project is building on top of this this repository [mjyc/head-pose-estimation-demo](https://github.com/mjyc/head-pose-estimation-demo)
