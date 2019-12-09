@@ -27,6 +27,7 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 <br />
 <br />
 ### Default screen
+![Default](media/Default.png)<br />
 **Open Control Box:** Move cursor to the upper middle square   <br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/open_control.gif" width="300" height ="200">
 <br />
@@ -37,6 +38,7 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 <br />
 <br />
 ### Control Screen
+![Control](media/control.png)<br />
 **Pause/ Play Video:**
 Move cursor to the bottom box<br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/play_pause.gif" width="300" height ="200"><br />
