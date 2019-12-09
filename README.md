@@ -1,6 +1,6 @@
 # Media Head Controller
 
-This project is building on top of this [git repository](https://github.com/mjyc/head-pose-estimation-demo)
+This project is building on top of this this repository[mjyc/head-pose-estimation-demo](https://github.com/mjyc/head-pose-estimation-demo)
 
 ## Build and Run this program
 ### Build
