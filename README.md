@@ -14,7 +14,6 @@ Open `host.commnd` if you are using MaxOS, or open `host.bat` if you are using W
 (If the access of above files is denied, try `chmod 777 host.command` or `chomod 777 host.bat`) <br />
 Open chrome, and type `localhost:8000` in the address bar. <br />
 
-<br />
 ## Commands detail
 ### Default screen
 **Open Control Box:** Move cursor to the upper middle square   <br />
