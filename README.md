@@ -29,7 +29,7 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/open_control.gif" width="300" height ="200">
 <br />
 <br />
-**Reset cursor postion (x-axis):** Move cursor to the reset line and wait for few seconds (all black feedback line is gone)<br />
+**Reset cursor postion (x-axis):** Move cursor to the reset line (upper line) and wait for few seconds (all black feedback line is gone)<br />
 <br />
 <br />
 <br />
