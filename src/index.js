@@ -54,20 +54,16 @@ function main(sources) {
   const modelPoints = cv.matFromArray(numRows, 3, cv.CV_64FC1, [
     0.0,
     0.0,
-    0.0, // Nose tip
     0.0,
     0.0,
-    0.0, // HACK! solvePnP doesn't work with 3 points, so copied the
-    //   first point to make the input 4 points
-    // 0.0, -330.0, -65.0,  // Chin
+    0.0,
+    0.0,
     -225.0,
     170.0,
-    -135.0, // Left eye left corner
+    -135.0,
     225.0,
     170.0,
-    -135.0 // Right eye right corne
-    // -150.0, -150.0, -125.0,  // Left Mouth corner
-    // 150.0, -150.0, -125.0,  // Right mouth corner
+    -135.0
   ]);
 
   // Camera internals
@@ -85,7 +81,7 @@ function main(sources) {
     0,
     1
   ]);
-  //console.log("Camera Matrix:", cameraMatrix.data64F);
+
 
   // Create Matrixes
   // Find the locations of n 3D points on the object and the corresponding 2D projections in the image
