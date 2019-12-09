@@ -19,17 +19,24 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 
 
 ## Commands detail
+change youtube videos
+[video-change](media/change_video.gif)
+
 ### Default screen
 **Open Control Box:** Move cursor to the upper middle square   <br />
+[open-control](media/open_control.gif)
 **Reset cursor postion (x-axis):** Move cursor to the reset line and wait for few seconds (all black feedback line is gone)<br />
 
 ### Control Screen
 **Pause/ Play Video:**
 Move cursor to the bottom box<br />
+[pause-play](media/play_pause.gif)
 **Forward/ Backward 15 seconds:**
 Move cursor to the right/left box<br />
+[f-b](media/forward_backward.gif)
 **Close Control Screen:**
 Slightly shake your head without touching the left/right box. <br />
+[close-box](media/cancel.gif)
 
 
 ### Feedforward Color code:
