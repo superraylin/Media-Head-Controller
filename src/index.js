@@ -14,6 +14,7 @@ window.eye_dis = 80;
 
 window.new_rot = [0,0,0];
 
+// Create a control panel for media head pose control
 class Button_Area{
   constructor(x,y,width,height){
     this.upper_left = [x,y];
@@ -32,7 +33,7 @@ class Button_Area{
   }
 }
 
-
+// Control panel keys for different functionalities and their operation area
 let up_trig = new Button_Area(85,0,30,30);
 let right_trig = new Button_Area(180,0,20,200);
 let left_trig = new Button_Area(0,0,20,200);
@@ -87,6 +88,7 @@ function main(sources) {
   //console.log("Camera Matrix:", cameraMatrix.data64F);
 
   // Create Matrixes
+  // Find the locations of n 3D points on the object and the corresponding 2D projections in the image
   const imagePoints = cv.Mat.zeros(numRows, 2, cv.CV_64FC1);
   const distCoeffs = cv.Mat.zeros(4, 1, cv.CV_64FC1); // Assuming no lens distortion
   const rvec = new cv.Mat({ width: 1, height: 3 }, cv.CV_64FC1);
@@ -134,11 +136,11 @@ function main(sources) {
         return;
       }
       const ns = person1.keypoints.filter(kpt => kpt.part === "nose")[0]
-        .position;
+        .position; // current position of nose
       const le = person1.keypoints.filter(kpt => kpt.part === "leftEye")[0]
-        .position;
+        .position; // current position of left eye
       const re = person1.keypoints.filter(kpt => kpt.part === "rightEye")[0]
-        .position;
+        .position; // current position of right eye
       let lea = {
         "y": 0,
         "x": 0
@@ -151,12 +153,12 @@ function main(sources) {
 
         if(person1.keypoints.find(kpt => kpt.part === "rightEar")){
           rea = person1.keypoints.filter(kpt => kpt.part === "rightEar")[0]
-          .position;
+          .position; // current position of left ear
         }
       } else {
 
         lea = person1.keypoints.filter(kpt => kpt.part === "leftEar")[0]
-        .position;
+        .position; // current position of right ear
       }
 
       // 2D image points. If you change the image, you need to change vector
@@ -186,9 +188,6 @@ function main(sources) {
       const distToLeftEyeX = Math.abs(le.x - ns.x);
       const distToRightEyeX = Math.abs(re.x - ns.x);
 
-      //const norm_x = distToLeftEyeX;
-      //const norm_y = Math.abs((lea.y + lea.x) / 2 - ns.x);
-
       if (distToLeftEyeX < distToRightEyeX) {
         // looking at left
         rvec.data64F[0] = -1.0;
@@ -214,23 +213,18 @@ function main(sources) {
         return;
       }
 
-
+      // Consider nose positions as the movements of cursor
       window.nose_x = (window.nose_x === -1)? ns.x:window.nose_x
       let diff_x = ns.x-window.nose_x;
       window.nose_x  = ns.x;
 
-
+      // Normalize nose movements on direction of both x and y axis
       let norm_x = ns.x - (re.x);
       let norm_y = ns.y - (lea.y + rea.y);
 
       if(norm_y < window.y_bound[0]) window.y_bound[0] = norm_y
       if(norm_y > window.y_bound[1]) window.y_bound[1] = norm_y
-      //console.log(window.y_bound[0],window.y_bound[1])
-      //console.log(norm_y)
-
-
-      //console.log(re.x - le.x );
-
+   
       if(Math.abs(distToRightEyeX - distToLeftEyeX) <3){
         let temp = Math.floor(Math.abs(re.x-le.x));
 
@@ -240,12 +234,6 @@ function main(sources) {
 
       let slope = 200/(window.eye_dis/1+35)
       let offset = 35*slope;
-
-      // console.log("***************")
-      // console.log(window.eye_dis)
-      // console.log(norm_y*slope+offset)
-
-
 
       window.cursor_pos[0] = Math.max(Math.min(window.cursor_pos[0]+diff_x,200),0);
       window.cursor_pos[1] = Math.max(Math.min(norm_y*slope+offset,200),0);
@@ -261,9 +249,6 @@ function main(sources) {
       //draw line in canvas
       var ctx = document.getElementById("myCanvas").getContext("2d");
       draw(ctx,move_list);
-
-      // cv.imshow(document.getElementById("canvasOutput"), im);
-      // im.delete();
     }
   });
 
@@ -289,7 +274,7 @@ function reset_buttons(){
   }
 }
 
-
+// Show the area of play/pause button
 function draw_play(ctx,pos,rgba,linewidth,check_play){
 
   ctx.strokeStyle = rgba;
@@ -303,7 +288,6 @@ function draw_play(ctx,pos,rgba,linewidth,check_play){
     ctx.closePath();
 
   }else{
-
     ctx.beginPath();
     ctx.moveTo(pos[0],pos[1]);
     ctx.lineTo(pos[0],pos[1]+20);
@@ -311,10 +295,10 @@ function draw_play(ctx,pos,rgba,linewidth,check_play){
     ctx.lineTo(pos[0]+10,pos[1]+20);
     ctx.stroke();
     ctx.closePath();
-
   }
 }
 
+// Show the area of moving forward/backward buttons
 function draw_fb(ctx,pos,rgba,linewidth,forward){
   ctx.strokeStyle = rgba;
   ctx.lineWidth = linewidth;
@@ -329,9 +313,7 @@ function draw_fb(ctx,pos,rgba,linewidth,forward){
     ctx.lineTo(pos[0]+5,pos[1]+10);
     ctx.stroke();
     ctx.closePath();
-
   }else{
-
     ctx.beginPath();
     ctx.moveTo(pos[0],pos[1]);
     ctx.lineTo(pos[0]-5,pos[1]+5);
@@ -342,9 +324,9 @@ function draw_fb(ctx,pos,rgba,linewidth,forward){
     ctx.lineTo(pos[0]+5,pos[1]+10);
     ctx.stroke();
     ctx.closePath();
-
   }
 }
+
 function draw_line(ctx,start,end,rgba,linewidth){
   ctx.beginPath();
   ctx.moveTo(start[0],start[1]);
@@ -372,7 +354,6 @@ function draw(ctx,move_list) {
     let col_up = green;
 
     //draw feedback trace
-
     
     for(let i=0;i<move_list.length-4;i++){
       draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
@@ -390,7 +371,6 @@ function draw(ctx,move_list) {
     }else{
       cur_cursor = [move_list[move_list.length-1][0],move_list[move_list.length-1][1]];
     }
-
 
     ctx.fillStyle = 'rgba(0, 0, 200, 1)';
     ctx.fillRect(cur_cursor[0]-5,cur_cursor[1]-5,10,10);
@@ -445,7 +425,7 @@ function draw(ctx,move_list) {
       reset_buttons();
     }
 
-    //draw feedforward trace to trigger
+    //draw feedforward trace to trigger buttons in dofferent regions
 
     if (region3.triggered === true){
       col_left = yellow;
@@ -479,11 +459,7 @@ function draw(ctx,move_list) {
       ctx.strokeRect(0,0,20,200);
       ctx.strokeRect(20,180,160,20);
 
-
       ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-      // ctx.strokeRect(20,0,50,150);
-      // ctx.strokeRect(130,0,50,150);
-      // ctx.strokeRect(20,150,160,30);
       draw_line(ctx, cur_cursor,right_trig.pos, col_right,10);
       draw_line(ctx, cur_cursor,left_trig.pos, col_left,10);
       draw_line(ctx, cur_cursor,down_trig.pos, col_down,10);
