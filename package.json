@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "npx browserify src/index.js -t babelify --outfile dist/index.js -dv",
-    "start": "npm install && npm run build && echo 'OPEN index.html IN YOUR BROWSER'"
+    "start": "npm install && npm run build && echo 'open host.command or host.bat and type localhost:8000 in browser'"
   },
   "repository": "https://github.com/mjyc/head-pose-estimation-demo",
   "dependencies": {

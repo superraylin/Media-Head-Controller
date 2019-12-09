@@ -9,7 +9,7 @@ first clone the repository to local folder
 make sure Node.js is installed <br />
 Run `npm start` in the folder
 
-### Run 
+### Run
 After the program is compiled successfully, <br />
 Open `host.command` if you are using MaxOS, or open `host.bat` if you are using Windows.
 (If the access of above files is denied, try `chmod 777 host.command` or `chomod 777 host.bat`) <br />
@@ -30,6 +30,7 @@ Open chrome, and type `localhost:8000` in the address bar. <br />  <br />  <br /
 <br />
 <br />
 **Reset cursor postion (x-axis):** Move cursor to the reset line (upper line) and wait for few seconds (all black feedback line is gone)<br />
+<img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/reset.gif" width="300" height ="200">
 <br />
 <br />
 <br />
@@ -53,9 +54,3 @@ Slightly shake your head without touching the left/right box. <br />
 **Green:** When only one command is possible. <br />
 **Yellow:** Multiple possible command.<br />
 **Red:** Move to that direction to close control screen, triggered only when the cursor are close to left or right side
-
-
-
-
-
-

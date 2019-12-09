@@ -181,37 +181,10 @@ function main(sources) {
         imagePoints.data64F[i] = v;
       });
 
-      // Hack! initialize transition and rotation matrixes to improve estimation
-      tvec.data64F[0] = -100;
-      tvec.data64F[1] = 100;
-      tvec.data64F[2] = 1000;
+
       const distToLeftEyeX = Math.abs(le.x - ns.x);
       const distToRightEyeX = Math.abs(re.x - ns.x);
 
-      if (distToLeftEyeX < distToRightEyeX) {
-        // looking at left
-        rvec.data64F[0] = -1.0;
-        rvec.data64F[1] = -0.75;
-        rvec.data64F[2] = -3.0;
-      } else {
-        // looking at right
-        rvec.data64F[0] = 1.0;
-        rvec.data64F[1] = -0.75;
-        rvec.data64F[2] = -3.0;
-      }
-
-      const success = cv.solvePnP(
-        modelPoints,
-        imagePoints,
-        cameraMatrix,
-        distCoeffs,
-        rvec,
-        tvec,
-        true
-      );
-      if (!success) {
-        return;
-      }
 
       // Consider nose positions as the movements of cursor
       window.nose_x = (window.nose_x === -1)? ns.x:window.nose_x
@@ -224,7 +197,7 @@ function main(sources) {
 
       if(norm_y < window.y_bound[0]) window.y_bound[0] = norm_y
       if(norm_y > window.y_bound[1]) window.y_bound[1] = norm_y
-   
+
       if(Math.abs(distToRightEyeX - distToLeftEyeX) <3){
         let temp = Math.floor(Math.abs(re.x-le.x));
 
@@ -354,7 +327,7 @@ function draw(ctx,move_list) {
     let col_up = green;
 
     //draw feedback trace
-    
+
     for(let i=0;i<move_list.length-4;i++){
       draw_line(ctx,move_list[i],move_list[i+1],'rgba(0, 0, 0, 1)',2);
     }
