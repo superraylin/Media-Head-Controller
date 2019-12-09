@@ -26,15 +26,17 @@ change youtube videos <br/>
 **Open Control Box:** Move cursor to the upper middle square   <br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/open_control.gif" width="300" height ="200"><br />
 **Reset cursor postion (x-axis):** Move cursor to the reset line and wait for few seconds (all black feedback line is gone)<br />
-
+<br />
+<br />
 ### Control Screen
 **Pause/ Play Video:**
 Move cursor to the bottom box<br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/play_pause.gif" width="300" height ="200"><br />
-![pause-play](media/play_pause.gif) <br />
+<br />
 **Forward/ Backward 15 seconds:**
 Move cursor to the right/left box<br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/forward_backward.gif" width="300" height ="200"><br />
+<br />
 **Close Control Screen:**
 Slightly shake your head without touching the left/right box. <br />
 <img src="https://github.com/superraylin/Media-Head-Controller/blob/master/media/cancel.gif" width="300" height ="200"><br />
