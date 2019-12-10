@@ -3,6 +3,9 @@ In the modern society, online tutorials on Youtube enable us to learn whenever a
 
 We provide a solution. Our project allows a user to control the flow of the video without using his hands. We project the movement of the user's head into a 2D plane. The user can use the cursor on the screen to play, pause, fast forward and rewind the video. 
 
+Video of how to use this program:
+[https://youtu.be/xsqti5juf1c](https://youtu.be/xsqti5juf1c)
+
 
 ## Build and Run this program
 ### Build
