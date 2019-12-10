@@ -11,7 +11,6 @@ window.cursor_pos = [100,100];
 window.nose_x = -1;
 window.y_bound = [-50,112];
 window.eye_dis = 80;
-
 window.new_rot = [0,0,0];
 
 // Create a control panel for media head pose control
@@ -49,7 +48,7 @@ buttons_list.push(up_trig,right_trig,left_trig,down_trig,region1,region2,region3
 var move_list = [];
 
 function main(sources) {
-  // 3D model points
+  /***** Begin of written by https://github.com/mjyc/head-pose-estimation-demo******/
   const numRows = 4;
   const modelPoints = cv.matFromArray(numRows, 3, cv.CV_64FC1, [
     0.0,
@@ -111,8 +110,9 @@ function main(sources) {
     jaco.delete();
   };
 
-  let nose_x =0, nose_y = 0
+  /***** End of written by https://github.com/mjyc/head-pose-estimation-demo******/
 
+  let nose_x =0, nose_y = 0
   var prevX = 0, currX = 0, prevY = 0, currY = 0;
 
   // main event loop
@@ -306,6 +306,8 @@ function draw_line(ctx,start,end,rgba,linewidth){
   ctx.closePath();
 
 }
+
+// Main draw function
 function draw(ctx,move_list) {
     ctx.clearRect(0, 0, 200, 200);
     let player = window.player;
