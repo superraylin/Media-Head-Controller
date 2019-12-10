@@ -6,7 +6,10 @@ We provide a solution. Our project allows a user to control the flow of the vide
 Video of how to use this program:
 [https://youtu.be/xsqti5juf1c](https://youtu.be/xsqti5juf1c)
 
-
+created by: <br />
+Ray Lin 75224483<br />
+Qiuyang Que 905231227<br />
+<br />
 ## Build and Run this program
 ### Build
 first clone the repository to local folder
