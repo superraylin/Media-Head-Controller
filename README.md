@@ -8,7 +8,7 @@ Video of how to use this program:
 
 created by: <br />
 Ray Lin 75224483<br />
-Qiuyang Que 905231227<br />
+Qiuyang Yue 905231227<br />
 <br />
 ## Build and Run this program
 ### Build
